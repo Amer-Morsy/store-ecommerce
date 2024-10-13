@@ -13,15 +13,14 @@ return new class extends Migration
     {
         Schema::create('tag_translations', function (Blueprint $table) {
             $table->id();
-            // $table->foreignId('tag_id')
-            //     ->constrained('tags')->cascadeOnDelete();
-            $table->unsignedBigInteger('tag_id'); // Ensure this is unsignedBigInteger
+            $table->unsignedBigInteger('tag_id');
             $table->foreign('tag_id')
                 ->references('id')->on('tags')->cascadeOnDelete();
             $table->string('locale');
             $table->string('name');
 
             $table->unique(['tag_id', 'locale']);
+            $table->timestamps();
         });
     }
 
