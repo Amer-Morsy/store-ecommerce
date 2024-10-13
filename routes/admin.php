@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\dashboard\AttributesController;
 use App\Http\Controllers\Dashboard\BrandsController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\LoginController;
@@ -109,6 +110,16 @@ Route::group([
             Route::post('images/db',[ProductsController::class, 'saveProductImagesDB']) -> name('admin.products.images.store.db');
         });
         ################################## end products    #######################################
+        ################################## attributes routes ######################################
+        Route::group(['prefix' => 'attributes'], function () {
+            Route::get('/', [AttributesController::class, 'index'])->name('admin.attributes');
+            Route::get('create', [AttributesController::class, 'create'])->name('admin.attributes.create');
+            Route::post('store', [AttributesController::class, 'store'])->name('admin.attributes.store');
+            Route::get('delete/{id}', [AttributesController::class, 'destroy'])->name('admin.attributes.delete');
+            Route::get('edit/{id}', [AttributesController::class, 'edit'])->name('admin.attributes.edit');
+            Route::post('update/{id}', [AttributesController::class, 'update'])->name('admin.attributes.update');
+        });
+        ################################## end attributes    #######################################
 
     });
 ### end auth routes ###################################################################################
