@@ -5,6 +5,7 @@ use App\Http\Controllers\Dashboard\BrandsController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\LoginController;
 use App\Http\Controllers\Dashboard\MainCategoriesController;
+use App\Http\Controllers\dashboard\OptionsController;
 use App\Http\Controllers\Dashboard\ProductsController;
 use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\Dashboard\SettingsController;
@@ -120,6 +121,17 @@ Route::group([
             Route::post('update/{id}', [AttributesController::class, 'update'])->name('admin.attributes.update');
         });
         ################################## end attributes    #######################################
+
+        ################################## start options ######################################
+        Route::group(['prefix' => 'options'], function () {
+            Route::get('/', [OptionsController::class, 'index'])->name('admin.options');
+            Route::get('create', [OptionsController::class, 'create'])->name('admin.options.create');
+            Route::post('store', [OptionsController::class, 'store'])->name('admin.options.store');
+            //Route::get('delete/{id}','OptionsController@destroy') -> name('admin.options.delete');
+//            Route::get('edit/{id}', 'OptionsController@edit')->name('admin.options.edit');
+//            Route::post('update/{id}', 'OptionsController@update')->name('admin.options.update');
+        });
+        ################################## end options    #######################################
 
     });
 ### end auth routes ###################################################################################
