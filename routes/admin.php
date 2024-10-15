@@ -128,8 +128,8 @@ Route::group([
             Route::get('create', [OptionsController::class, 'create'])->name('admin.options.create');
             Route::post('store', [OptionsController::class, 'store'])->name('admin.options.store');
             //Route::get('delete/{id}','OptionsController@destroy') -> name('admin.options.delete');
-//            Route::get('edit/{id}', 'OptionsController@edit')->name('admin.options.edit');
-//            Route::post('update/{id}', 'OptionsController@update')->name('admin.options.update');
+            Route::get('edit/{id}', [OptionsController::class, 'edit'])->name('admin.options.edit');
+            Route::post('update/{id}', [OptionsController::class, 'update'])->name('admin.options.update');
         });
         ################################## end options    #######################################
 
