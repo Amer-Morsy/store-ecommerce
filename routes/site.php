@@ -12,7 +12,28 @@ use Illuminate\Support\Facades\Route;
 | contains the "Web" middleware group. Now create something great!
 |
 */
+Auth::routes();
 
-route::get('/',function(){
-    return view('front.home');
-});
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+//Route::get('/', function () {
+//    return view('front.home');
+//});
+
+//Route::group([
+//    'prefix' => LaravelLocalization::setLocale(),
+//    'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath']
+//], function () {
+//
+//    Route::group(['namespace' => 'Site', 'middleware' => 'auth'], function () {
+//        // must be authenticated user
+//    });
+//
+//    Route::group(['namespace' => 'Site', 'middleware' => 'guest'], function () {
+//
+//        //guest  user
+//
+//        Route::get('login', 'LoginController@login')->name('login');
+//        Route::post('login', 'LoginController@postLogin')->name('post.login');
+//
+//    });
+//});
