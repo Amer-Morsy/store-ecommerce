@@ -24,24 +24,39 @@ class Category extends Model
         'is_active' => 'boolean',
     ];
 
-    public function scopeActive($query){
+    public function scopeActive($query)
+    {
         return $query->where('is_active', 1);
     }
 
-    public function scopeParent($query){
-        return $query -> whereNull('parent_id');
+    public function scopeParent($query)
+    {
+        return $query->whereNull('parent_id');
     }
 
-    public function scopeChild($query){
-        return $query -> whereNotNull('parent_id');
+    public function scopeChild($query)
+    {
+        return $query->whereNotNull('parent_id');
     }
 
-    public function getActive(){
-        return  $this -> is_active  == 0 ?  'غير مفعل'   : 'مفعل' ;
+    public function getActive()
+    {
+        return $this->is_active == 0 ? 'غير مفعل' : 'مفعل';
     }
 
-    public function _parent(){
+    public function _parent()
+    {
         return $this->belongsTo(self::class, 'parent_id');
+    }
+
+    public function childrens()
+    {
+        return $this->hasMany(Self::class, 'parent_id');
+    }
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'product_categories');
     }
 
 }

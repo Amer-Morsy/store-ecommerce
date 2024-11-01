@@ -2,21 +2,27 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Astrotomic\Translatable\Translatable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
-    use HasFactory,
-        Translatable,
+    use Translatable,
         SoftDeletes;
 
+    /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
     protected $with = ['translations'];
 
-    protected $translatedAttributes = ['name', 'description', 'short_description'];
-
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = [
         'brand_id',
         'slug',
@@ -33,12 +39,22 @@ class Product extends Model
         'is_active'
     ];
 
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
     protected $casts = [
         'manage_stock' => 'boolean',
         'in_stock' => 'boolean',
         'is_active' => 'boolean',
     ];
 
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
     protected $dates = [
         'special_price_start',
         'special_price_end',
@@ -57,13 +73,21 @@ class Product extends Model
          'is_new', 'has_percentage_special_price', 'special_price_percent',
      ];*/
 
+    /**
+     * The attributes that are translatable.
+     *
+     * @var array
+     */
+    protected $translatedAttributes = ['name', 'description', 'short_description'];
+
     public function brand()
     {
         return $this->belongsTo(Brand::class)->withDefault();
     }
 
-    public function getActive(){
-        return  $this -> is_active  == 0 ?  'غير مفعل'   : 'مفعل' ;
+    public function getActive()
+    {
+        return $this->is_active == 0 ? 'غير مفعل' : 'مفعل';
     }
 
     public function categories()
@@ -71,13 +95,25 @@ class Product extends Model
         return $this->belongsToMany(Category::class, 'product_categories');
     }
 
-//    public function scopeActive($query){
-//        return $query -> where('is_active',1);
-//    }
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', 1);
+    }
 
     public function tags()
     {
         return $this->belongsToMany(Tag::class, 'product_tags');
     }
+
+    public function options()
+    {
+        return $this->hasMany(Option::class, 'product_id');
+    }
+
+    public function images()
+    {
+        return $this->hasMany(Image::class, 'product_id');
+    }
+
 
 }

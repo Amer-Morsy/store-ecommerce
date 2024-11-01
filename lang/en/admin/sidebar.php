@@ -7,5 +7,6 @@ return [
     'free shipping' => 'free shipping',
     'inner shipping' => 'inner shipping',
     'outer shipping' => 'outer shipping',
+    'main slider'  => 'Main Slider'
 
 ];
