@@ -8,14 +8,20 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
+    public function index($slug)
+    {
+        return "in index $slug";
+
+    }
+
     public function productsBySlug($slug)
     {
         $data = [];
         $data['category'] = Category::where('slug', $slug)->first();
         if ($data['category'])
-            $data['products'] = $data['category']->products;
+             $data['products'] = $data['category']->products;
 
-        return  view('front.products',$data);
+        return view('front.products', $data);
 
     }
 }
