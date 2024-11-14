@@ -15,7 +15,7 @@
 
 
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=yes">
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <link rel="icon" type="image/vnd.microsoft.icon" href="{{asset('assets/front/img/favicon.ico')}}?1531456858">
     <link rel="shortcut icon" type="image/x-icon" href="{{asset('assets/front/img/favicon.ico')}}?1531456858">
@@ -469,8 +469,11 @@
 
 
 <script type="text/javascript"
-        src="{{asset('assets/front/themes/vinova_savemart/assets/cache/bottom-3c96ed23.js')}}"></script>
+        src="{{asset('assets/front/themes/vinova_savemart/assets/cache/bottom-3c96ed23.js')}}">
 
+</script>
+
+@yield('scripts')
 
 </body>
 </html>

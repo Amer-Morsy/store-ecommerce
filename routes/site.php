@@ -1,6 +1,10 @@
 <?php
 
+use App\Http\Controllers\Site\CategoryController;
+use App\Http\Controllers\Site\HomeController;
+use App\Http\Controllers\Site\ProductController;
 use App\Http\Controllers\Site\VerificationCodeController;
+use App\Http\Controllers\Site\WishlistController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,39 +19,34 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-route::get('/', function () {
-    return view('front.home');
-})->name('home');
-
-
 Route::group([
     'prefix' => LaravelLocalization::setLocale(),
     'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath']
 ], function () {
 
-    Route::group(['namespace' => 'Site', 'middleware' => ['auth', 'VerifiedUser']], function () {
-        // must be authenticated user and verified
-
-        Route::get('profile', function () {
-
-            return 'You Are Authenticated ';
-        });
+    Route::group(['namespace' => 'Site'], function () {
+        route::get('/', [HomeController::class, 'home'])->name('home');
+        route::get('/category/{slug}', [CategoryController::class, 'productsBySlug'])->name('category');
+        route::get('product/{slug}', [ProductController::class, 'productsBySlug'])->name('product.details');
     });
 
     Route::group(['namespace' => 'Site', 'middleware' => 'auth'], function () {
         // must be authenticated user
-
         Route::post('verify-user/', [VerificationCodeController::class, 'verify'])->name('verify-user');
-
-
+        Route::get('verify', [VerificationCodeController::class, 'getVerifyPage'])->name('get.verification.form');
     });
 
-    Route::group(['namespace' => 'Site', 'middleware' => 'guest'], function () {
+    Route::group(['namespace' => 'Site', 'middleware' => ['auth', 'VerifiedUser']], function () {
+        // must be authenticated user and verified
+        Route::get('profile', function () {
+            return 'You Are Authenticated ';
+        });
+    });
 
-        //guest  user
-    });
-    Route::get('verify', function () {
-        return view('auth.verification');
-    });
+
 });
-
+Route::group(['namespace' => 'Site', 'middleware' => 'auth'], function () {
+    Route::post('wishlist', [WishlistController::class, 'store'])->name('wishlist.store');
+    Route::delete('wishlist', [WishlistController::class, 'destroy'])->name('wishlist.destroy');
+    Route::get('wishlist/products', [WishlistController::class, 'index'])->name('wishlist.products.index');
+});

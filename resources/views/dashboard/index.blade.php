@@ -68,7 +68,7 @@
                                             <h4>عدد المنتجات </h4>
                                         </div>
                                         <div class="col-5 text-right">
-                                            <h4>200</h4>
+                                            <h4>{{\App\Models\Product::count()}}</h4>
                                         </div>
                                     </div>
                                 </div>
@@ -92,7 +92,7 @@
                                             <h4>عدد العملاء</h4>
                                         </div>
                                         <div class="col-5 text-right">
-                                            <h4>2000</h4>
+                                            <h4>{{\App\Models\User::count()}}</h4>
                                         </div>
                                     </div>
                                 </div>
@@ -159,14 +159,15 @@
                                         <tr>
                                             <th> العميل</th>
                                             <th>المنتج</th>
-                                            <th>التقييم </th>
-                                        </tr>عدد العملاء
+                                            <th>التقييم</th>
+                                        </tr>
+                                        عدد العملاء
                                         </thead>
                                         <tbody>
                                         <tr class="bg-danger bg-lighten-5">
                                             <td>عامر مرسي</td>
                                             <td><i class="cc BTC-alt"></i> ساعه يد</td>
-                                            <td> 5 </td>
+                                            <td> 5</td>
                                         </tr>
 
                                         </tbody>

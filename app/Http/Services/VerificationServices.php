@@ -22,26 +22,32 @@ class VerificationServices
         return User_verfication::create($data);
     }
 
-    public function getSMSVerifyMessageByAppName( $code)
+    public function getSMSVerifyMessageByAppName($code)
     {
         $message = " is your verification code for your account";
 
-        return $code.$message;
+        return $code . $message;
     }
 
-    public function checkOTPCode ($code){
+    public function checkOTPCode($code)
+    {
 
         if (Auth::guard()->check()) {
-            $verificationData = User_verfication::where('user_id',Auth::id()) -> first();
+            $verificationData = User_verfication::where('user_id', Auth::id())->first();
 
-            if($verificationData -> code == $code){
-                User::whereId(Auth::id()) -> update(['email_verified_at' => now()]);
+            if ($verificationData->code == $code) {
+                User::whereId(Auth::id())->update(['email_verified_at' => now()]);
                 return true;
-            }else{
+            } else {
                 return false;
             }
         }
-        return false ;
+        return false;
+    }
+
+    public function removeOTPCode($code)
+    {
+        User_verfication::where('code', $code)->delete();
     }
 
 }
