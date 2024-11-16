@@ -33,6 +33,7 @@
     <link rel="stylesheet" type="text/css"
           href="{{asset('assets/admin/'.getFolder().'/core/menu/menu-types/vertical-menu.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('assets/admin/'.getFolder().'/pages/chat-application.css')}}">
+
     <!-- END VENDOR CSS-->
     <!-- BEGIN MODERN CSS-->
     <link rel="stylesheet" type="text/css" href="{{asset('assets/admin/'.getFolder().'/app.css')}}">
@@ -68,6 +69,7 @@
 <body class="vertical-layout vertical-menu 2-columns menu-expanded fixed-navbar"
       data-open="click" data-menu="vertical-menu" data-col="2-columns">
 <!-- fixed-top-->
+
 <!-- begin header -->
 @include('dashboard.includes.header')
 <!-- end header -->
@@ -75,7 +77,6 @@
 @include('dashboard.includes.sidebar')
 
 <!-- end sidebar -->
-
 @yield('content')
 
 <!-- begin footer html -->
@@ -86,8 +87,12 @@
 @notify_js
 @notify_render
 
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+
 <!-- BEGIN VENDOR JS-->
 <script src="{{asset('assets/admin/vendors/js/vendors.min.js')}}" type="text/javascript"></script>
+<script src="{{asset('assets/admin/vendors/js/editors/ckeditor/ckeditor.js')}}" type="text/javascript"></script>
+
 <!-- BEGIN VENDOR JS-->
 <script src="{{asset('assets/admin/vendors/js/tables/datatable/datatables.min.js')}}"
         type="text/javascript"></script>
@@ -117,6 +122,7 @@
 <!-- BEGIN MODERN JS-->
 <script src="{{asset('assets/admin/js/core/app-menu.js')}}" type="text/javascript"></script>
 <script src="{{asset('assets/admin/js/core/app.js')}}" type="text/javascript"></script>
+
 <script src="{{asset('assets/admin/js/scripts/customizer.js')}}" type="text/javascript"></script>
 <!-- END MODERN JS-->
 <!-- BEGIN PAGE LEVEL JS-->
@@ -126,13 +132,31 @@
 <script src="{{asset('assets/admin/js/scripts/tables/datatables/datatable-basic.js')}}"
         type="text/javascript"></script>
 <script src="{{asset('assets/admin/js/scripts/extensions/date-time-dropper.js')}}" type="text/javascript"></script>
+<script src="{{asset('assets/admin/vendors/js/ui/prism.min.js')}}" type="text/javascript"></script>
+<script src="{{asset('assets/admin/js/scripts/pages/email-application.js')}}" type="text/javascript"></script>
 <!-- END PAGE LEVEL JS-->
 
 <script src="{{asset('assets/admin/js/scripts/forms/checkbox-radio.js')}}" type="text/javascript"></script>
-
 <script src="{{asset('assets/admin/js/scripts/modal/components-modal.js')}}" type="text/javascript"></script>
 
 <script>
+    var previousCounter = $('.notification-counter').text(); //8
+    var notificationsCount = parseInt(previousCounter);
+    // Enable pusher logging - don't include this in production
+    var pusher = new Pusher('fb3d0dee02ba83d8f536', {
+        encrypted: true
+    });
+    //Pusher.logToConsole = true;
+    // Subscribe to the channel we specified in our Laravel Event
+    var channel = pusher.subscribe('order');
+    // Bind a function to a Our Event
+    channel.bind('App\\Events\\NewOrder', function (data) {
+        notificationsCount += 1;
+        $('.notification-counter').text(notificationsCount)
+    });
+</script>
+<script>
+
     $('#meridians1').timeDropper({
         meridians: true,
         setCurrentTime: false

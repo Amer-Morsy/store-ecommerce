@@ -5,6 +5,7 @@
 <nav data-depth="3" class="breadcrumb-bg">
     <div class="container no-index">
         <div class="breadcrumb">
+
             <ol itemscope="" itemtype="http://schema.org/BreadcrumbList">
                 <li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
                     <a itemprop="item" href="{{route('home')}}">
@@ -19,6 +20,7 @@
                     <meta itemprop="position" content="3">
                 </li>
             </ol>
+
         </div>
     </div>
 </nav>
@@ -32,6 +34,7 @@
                 <section id="products">
 
                     <div id="nav-top">
+
                         <div id="js-product-list-top" class="row products-selection">
                             <div class="col-md-6 col-xs-6">
                                 <div class="change-type">
@@ -45,6 +48,7 @@
                             </div>
                             <div class="col-md-6 col-xs-6">
                                 <div class="d-flex sort-by-row justify-content-end">
+
                                     <span class="hidden-sm-down sort-by">Sort by:</span>
                                     <div class="products-sort-order dropdown">
                                         <a class="select-title" rel="nofollow" data-toggle="dropdown"
@@ -71,10 +75,13 @@
 
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
+
                     </div>
+
 
                     <div id="categories-product">
                         <div id="js-product-list">
@@ -99,6 +106,8 @@
                                                     data-full-size-image-url="{{$product -> images[0] -> photo ?? ''}}"
                                                     width="600" height="600">
                                             </a>
+
+
                                             <div class="product-flags new">New</div>
                                         </div>
                                         <div class="product-description">
@@ -119,6 +128,8 @@
                                                         </div>
                                                         <span>0 review</span>
                                                     </div>
+
+
                                                     <div class="info-stock ml-auto">
                                                         <label class="control-label">Availability:</label>
                                                         <i class="fa fa-check-square-o"
@@ -128,8 +139,7 @@
                                                 </div>
 
                                                 <div class="product-title" itemprop="name"><a
-                                                        href="{{route('product.details',$product -> slug)}}">{{$product -> name}}</a>
-                                                </div>
+                                                        href="{{route('product.details',$product -> slug)}}">{{$product -> name}}</a></div>
 
                                                 <div class="product-group-price">
                                                     <div class="product-price-and-shipping">
@@ -151,14 +161,11 @@
                                                 itemprop="offers" itemscope=""
                                                 itemtype="http://schema.org/Offer">
                                                 <form
-                                                    action=""
                                                     method="post" class="formAddToCart">
                                                     @csrf
                                                     <input type="hidden" name="id_product"
                                                         value="{{$product -> id}}">
-                                                    <a class="add-to-cart cart-addition"
-                                                        data-product-id="{{$product -> id}}"
-                                                        data-product-slug="{{$product -> slug}}" href="#"
+                                                    <a class="add-to-cart cart-addition" data-product-id="{{$product -> id}}" data-product-slug="{{$product -> slug}}" href="#"
                                                         data-button-action="add-to-cart"><i
                                                             class="novicon-cart"></i><span>Add to cart</span></a>
                                                 </form>
@@ -232,7 +239,6 @@
         $('.alert-modal').css("display", "none");
         $('.alert-modal2').css("display", "none");
     });
-
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -256,9 +262,6 @@
                     $('.alert-modal').css('display', 'block');
                 else
                     $('.alert-modal2').css('display', 'block');
-            },
-            error: function(xhr) {
-                console.error(xhr); // Log the error for debugging
             }
         });
     });
@@ -268,13 +271,18 @@
 
         $.ajax({
             type: 'post',
-            url: "",
+            url: "{{Route('site.cart.add')}}",
             data: {
                 'product_id': $(this).attr('data-product-id'),
                 'product_slug': $(this).attr('data-product-slug'),
             },
             success: function(data) {
+                console.error("Add: " + data);
 
+            },
+            error: function(xhr, status, error) {
+                console.error("Error occurred: " + xhr.responseText);
+                alert("An error occurred: " + xhr.status + " " + xhr.statusText);
             }
         });
     });

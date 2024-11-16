@@ -284,7 +284,7 @@
             background-image: url(../modules/novthemeconfig/images/newsletter_bg-1.png);
         }
     </style>
-
+    @yield('styles')
 </head>
 <body id="index" class="lang-en country-gb currency-gbp layout-full-width page-index tax-display-enabled">
 
