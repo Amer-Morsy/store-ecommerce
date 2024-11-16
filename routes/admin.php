@@ -8,9 +8,11 @@ use App\Http\Controllers\Dashboard\MainCategoriesController;
 use App\Http\Controllers\Dashboard\OptionsController;
 use App\Http\Controllers\Dashboard\ProductsController;
 use App\Http\Controllers\Dashboard\ProfileController;
+use App\Http\Controllers\Dashboard\RolesController;
 use App\Http\Controllers\Dashboard\SettingsController;
 use App\Http\Controllers\Dashboard\SubCategoriesController;
 use App\Http\Controllers\Dashboard\TagsController;
+use App\Http\Controllers\Dashboard\UsersController;
 use App\Http\Controllers\SliderController;
 use Illuminate\Support\Facades\Route;
 
@@ -45,7 +47,7 @@ Route::group([
         Route::get('logout', [LoginController::class, 'logout'])->name('admin.logout');
         ### end index|logout routes #################################################################
         ### start settings routes ##########################################################################
-        Route::group(['prefix' => 'settings'], function () {
+        Route::group(['prefix' => 'settings', 'middleware' => 'can:settings'], function () {
             Route::get('shipping-methods/{type}', [SettingsController::class, 'editShippingMethods'])
                 ->name('edit.shippings.methods');
             Route::put('shipping-methods/{id}', [SettingsController::class, 'updateShippingMethods'])
@@ -72,7 +74,7 @@ Route::group([
         ### end Categories routes #####################################################
 
         ################################## brands routes ######################################
-        Route::group(['prefix' => 'brands'], function () {
+        Route::group(['prefix' => 'brands', 'middleware' => 'can:brands'], function () {
             Route::get('/', [BrandsController::class, 'index'])->name('admin.brands');
             Route::get('create', [BrandsController::class, 'create'])->name('admin.brands.create');
             Route::post('store', [BrandsController::class, 'store'])->name('admin.brands.store');
@@ -82,7 +84,7 @@ Route::group([
         });
         ################################## end brands    #######################################
         ################################## Tags routes ######################################
-        Route::group(['prefix' => 'tags'], function () {
+        Route::group(['prefix' => 'tags','middleware' => 'can:tags'], function () {
             Route::get('/', [TagsController::class, 'index'])->name('admin.tags');
             Route::get('create', [TagsController::class, 'create'])->name('admin.tags.create');
             Route::post('store', [TagsController::class, 'store'])->name('admin.tags.store');
@@ -144,6 +146,21 @@ Route::group([
 
         });
         ################################## end sliders    #######################################
+
+        ################################## roles ######################################
+        Route::group(['prefix' => 'roles'], function () {
+            Route::get('/', [RolesController::class, 'index'])->name('admin.roles.index');
+            Route::get('create', [RolesController::class, 'create'])->name('admin.roles.create');
+            Route::post('store', [RolesController::class, 'saveRole'])->name('admin.roles.store');
+            Route::get('/edit/{id}', [RolesController::class, 'edit'])->name('admin.roles.edit');
+            Route::post('update/{id}', [RolesController::class, 'update'])->name('admin.roles.update');
+        });
+        ################################## end roles ######################################
+        Route::group(['prefix' => 'users', 'middleware' => 'can:users'], function () {
+            Route::get('/', [UsersController::class, 'index'])->name('admin.users.index');
+            Route::get('/create', [UsersController::class, 'create'])->name('admin.users.create');
+            Route::post('/store', [UsersController::class, 'store'])->name('admin.users.store');
+        });
 
     });
 ### end auth routes ###################################################################################
